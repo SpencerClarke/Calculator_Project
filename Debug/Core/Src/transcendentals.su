@@ -1,0 +1,10 @@
+../Core/Src/transcendentals.c:2:8:powfi	40	static
+../Core/Src/transcendentals.c:29:8:absf	24	static
+../Core/Src/transcendentals.c:37:8:lnf_near_1	168	static
+../Core/Src/transcendentals.c:79:8:lnf	88	static
+../Core/Src/transcendentals.c:104:8:powff_near_0	64	static
+../Core/Src/transcendentals.c:120:8:powff	48	static
+../Core/Src/transcendentals.c:127:8:sin_near_0	40	static
+../Core/Src/transcendentals.c:151:8:cos_near_0	48	static
+../Core/Src/transcendentals.c:176:8:cosine	40	static
+../Core/Src/transcendentals.c:189:8:sine	40	static

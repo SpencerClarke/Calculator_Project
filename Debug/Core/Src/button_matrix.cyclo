@@ -1,0 +1,5 @@
+../Core/Src/button_matrix.c:20:6:button_matrix_init	2
+../Core/Src/button_matrix.c:27:5:button_matrix_is_pressed	3
+../Core/Src/button_matrix.c:47:6:button_matrix_wait_for_unpress	5
+../Core/Src/button_matrix.c:67:6:button_matrix_get_press	4
+../Core/Src/button_matrix.c:89:6:button_matrix_get_key	1
