@@ -1,12 +1,12 @@
 #include "lexer.h"
 #include "transcendentals.h"
 
-/* expr    := term + expr      | term - expr    | term
+/* expr    := expr + term      | expr - term    | term
  * term    := sfactor * term   | sfactor / term | sfactor
- * sfactor := factor ^ sfactor | factor
- * factor  := RCONST           | ( expr )
+ * sfactor := - pfactor        | pfactor
+ * pfactor := factor ^ pfactor | factor
+ * factor  := RCONST | ( expr ) | LN ( expr ) | SIN ( expr ) | COS ( expr )
  */
-
 
 enum error_type {DIV_ZERO, SYNTAX, BAD_LN, NONE};
 
