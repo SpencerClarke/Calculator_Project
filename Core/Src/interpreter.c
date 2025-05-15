@@ -4,7 +4,7 @@
  * term    := sfactor * term   | sfactor / term | sfactor
  * sfactor := - pfactor        | pfactor
  * pfactor := factor ^ pfactor | factor
- * factor  := RCONST           | ( expr )
+ * factor  := RCONST | ( expr ) | LN ( expr ) | SIN ( expr ) | COS ( expr )
  */
 
 enum error_type error = NONE;
@@ -20,8 +20,8 @@ static void update_error(enum error_type type)
 
 int parse_top(char **input, double *retval)
 {
-		int ret;
-		error = NONE;
+	int ret;
+	error = NONE;
         has_last_token = 0;
         ret = parse_expr(input, retval);
         if(last_token.type != END)
@@ -41,7 +41,7 @@ int parse_expr(char **input, double *retval)
         double term_retval;
         if(!parse_term(input, &term_retval))
         {
-    			update_error(SYNTAX);
+    		update_error(SYNTAX);
                 return 0;
         }
         *retval = term_retval;
@@ -52,7 +52,7 @@ int parse_expr(char **input, double *retval)
                 {
                         if(!parse_term(input, &term_retval))
                         {
-                        		update_error(SYNTAX);
+				update_error(SYNTAX);
                                 return 0;
                         }
                         *retval += term_retval;
@@ -61,7 +61,7 @@ int parse_expr(char **input, double *retval)
                 {
                         if(!parse_term(input, &term_retval))
                         {
-                    			update_error(SYNTAX);
+				update_error(SYNTAX);
                                 return 0;
                         }
                         *retval -= term_retval;
@@ -77,7 +77,7 @@ int parse_term(char **input, double *retval)
         double sfactor_retval;
         if(!parse_sfactor(input, &sfactor_retval))
         {
-    			update_error(SYNTAX);
+		update_error(SYNTAX);
                 return 0;
         }
         *retval = sfactor_retval;
@@ -88,7 +88,7 @@ int parse_term(char **input, double *retval)
                 {
                         if(!parse_term(input, &sfactor_retval))
                         {
-                    			update_error(SYNTAX);
+				update_error(SYNTAX);
                                 return 0;
                         }
                         *retval *= sfactor_retval;
@@ -97,12 +97,12 @@ int parse_term(char **input, double *retval)
                 {
                         if(!parse_term(input, &sfactor_retval))
                         {
-                    			update_error(SYNTAX);
+				update_error(SYNTAX);
                                 return 0;
                         }
                         if(sfactor_retval == 0.0)
                         {
-                    		update_error(DIV_ZERO);
+				update_error(DIV_ZERO);
                         	return 0;
                         }
                         *retval /= sfactor_retval;
@@ -130,7 +130,7 @@ int parse_sfactor(char **input, double *retval)
         }
         if(!parse_pfactor(input, &pfactor_retval))
         {
-				update_error(SYNTAX);
+		update_error(SYNTAX);
                 return 0;
         }
         *retval = unary_sign * pfactor_retval;
@@ -144,7 +144,7 @@ int parse_pfactor(char **input, double *retval)
 
         if(!parse_factor(input, &factor_retval))
         {
-				update_error(SYNTAX);
+		update_error(SYNTAX);
                 return 0;
         }
 
@@ -158,7 +158,7 @@ int parse_pfactor(char **input, double *retval)
 
         if(!parse_pfactor(input, &pfactor_retval))
         {
-				update_error(SYNTAX);
+		update_error(SYNTAX);
                 return 0;
         }
 
@@ -175,13 +175,13 @@ int parse_factor(char **input, double *retval)
                 double expr_retval;
                 if(!parse_expr(input, &expr_retval))
                 {
-        				update_error(SYNTAX);
+			update_error(SYNTAX);
                         return 0;
                 }
                 current_token = get_next_token(input);
                 if(current_token.type != RPAREN)
                 {
-        				update_error(SYNTAX);
+			update_error(SYNTAX);
                         return 0;
                 }
                 *retval = expr_retval;
@@ -194,24 +194,24 @@ int parse_factor(char **input, double *retval)
         	current_token = get_next_token(input);
         	if(current_token.type != LPAREN)
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
 
         	if(!parse_expr(input, &expr_retval))
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
         	if(expr_retval <= 0)
         	{
-        		update_error(BAD_LN);
+			update_error(BAD_LN);
         		return 0;
         	}
-        	current_token = get_next_token(input);
+		current_token = get_next_token(input);
         	if(current_token.type != RPAREN)
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
         	*retval = lnf(expr_retval);
@@ -223,19 +223,19 @@ int parse_factor(char **input, double *retval)
         	current_token = get_next_token(input);
         	if(current_token.type != LPAREN)
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
 
         	if(!parse_expr(input, &expr_retval))
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
         	current_token = get_next_token(input);
         	if(current_token.type != RPAREN)
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
         	*retval = sine(expr_retval);
@@ -247,7 +247,7 @@ int parse_factor(char **input, double *retval)
         	current_token = get_next_token(input);
         	if(current_token.type != LPAREN)
         	{
-        		update_error(SYNTAX);
+			update_error(SYNTAX);
         		return 0;
         	}
 
@@ -276,7 +276,7 @@ int parse_factor(char **input, double *retval)
         }
         else
         {
-				update_error(SYNTAX);
+		update_error(SYNTAX);
                 return 0;
         }
 }
