@@ -5,7 +5,7 @@
  * term    := sfactor * term   | sfactor / term | sfactor
  * sfactor := - pfactor        | pfactor
  * pfactor := factor ^ pfactor | factor
- * factor  := RCONST | ( expr ) | LN ( expr ) | SIN ( expr ) | COS ( expr )
+ * factor  := RCONST | ( expr ) | LN ( expr ) | SIN ( expr ) | COS ( expr ) | ANS
  */
 
 enum error_type {DIV_ZERO, SYNTAX, BAD_LN, NONE};
